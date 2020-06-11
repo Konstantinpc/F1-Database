@@ -1,16 +1,36 @@
 package sim.subd;
 
 public class GrandPrix {
+    private String location;
+    private String name;
     private Integer laps;
-    private Boolean is_rain;
-    private Double lap_length;
+    private Integer is_rain;
+    private Double length;
     private Integer turns;
 
-    public GrandPrix(Integer laps, Boolean is_rain, Double lap_length, Integer turns) {
+    public GrandPrix(String location, String name, Integer laps, Integer is_rain, Double length, Integer turns) {
+        this.location=location;
+        this.name=name;
         this.laps = laps;
         this.is_rain = is_rain;
-        this.lap_length = lap_length;
+        this.length = length;
         this.turns = turns;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getLaps() {
@@ -21,20 +41,20 @@ public class GrandPrix {
         this.laps = laps;
     }
 
-    public Boolean getIs_rain() {
+    public Integer getIs_rain() {
         return is_rain;
     }
 
-    public void setIs_rain(Boolean is_rain) {
+    public void setIs_rain(Integer is_rain) {
         this.is_rain = is_rain;
     }
 
-    public Double getLap_length() {
-        return lap_length;
+    public Double getLength() {
+        return length;
     }
 
-    public void setLap_length(Double lap_length) {
-        this.lap_length = lap_length;
+    public void setLength(Double length) {
+        this.length = length;
     }
 
     public Integer getTurns() {

@@ -3,34 +3,34 @@ package sim.subd;
 public enum Teams {
 
 
-    MERCEDES{
+    Mercedes{
         @Override
         public Double getSpeed(){ return 280.5; }
-    }, FERRARI{
+    }, Ferrari{
         @Override
         public Double getSpeed(){ return 280.0; }
-    }, RED_BULL{
+    }, Red_bull{
         @Override
         public Double getSpeed(){ return 279.8; }
-    }, McLARREN{
+    }, McLarren{
         @Override
         public Double getSpeed(){ return 279.0; }
-    }, ALFA_ROMEO{
+    }, Alfa_Romeo{
         @Override
         public Double getSpeed(){ return 278.6; }
-    }, RENAULT{
+    }, Renault{
         @Override
         public Double getSpeed(){ return 278.0; }
-    }, RACING_POINT{
+    }, Racing_Point{
         @Override
         public Double getSpeed(){ return 277.0; }
-    }, WILLIAMS{
+    }, Williams{
         @Override
         public Double getSpeed(){ return 276.5; }
-    }, TORO_ROSSO{
+    }, Toro_Rosso{
         @Override
         public Double getSpeed(){ return 277.3; }
-    }, HAAS{
+    }, Haas{
         @Override
         public Double getSpeed(){ return 276.7; }
     };

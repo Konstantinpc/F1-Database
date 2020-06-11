@@ -1,0 +1,22 @@
+Lewis Hamilton, Mercedes, Super_star
+Valteri Bottas, Mercedes, Average
+Sebastien Vettel, Ferrari, Star
+Charles Leclerc, Ferrari, Wunderkind
+Max Verstappen, Red_bull, Wunderkind
+Alex Albon, Red_bull, Newby
+Daniel Richiardo, Renault, Star
+Esteban Ocon, Renault, Newby
+Lando Norris, McLarren, Wunderkind
+Carlos Sainz Jr, McLarren, Average
+Kimi Raikonen, Alfa_Romeo, Star
+Antonio Giovinazzi, Alfa_Romeo, Newby
+
+
+Australia, Albert Park, 72, 290.340, 21, 0
+Bahrain, Bahrain Int Circuit, 49, 312.560, 14, 0
+Monaco, Circuit de Monaco, 80, 280.290, 27, 1
+France, Paul Richard, 57, 309.690, 17, 1
+Russia, Sochi Autodorm, 54, 305.670, 18, 0
+Japan, Suzuka, 53, 307.471, 18, 0
+Italy, Monza, 53, 306.720, 11, 1
+Brazil, Autodromo Jose Carlos Pace, 71, 305.879, 15, 0 

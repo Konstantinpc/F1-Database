@@ -1,10 +1,11 @@
 package sim.subd;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.CollationElementIterator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Race {
     private List<Contestant> contestants = new ArrayList<>();
@@ -27,7 +28,7 @@ public class Race {
         }
     }
 
-    public void simulateRace(double length, boolean r, int laps){
+    public void simulateRace(double length, int r, int laps, int id){
 
         for(int j=0; j<contestants.size(); j++) {
             contestants.get(j).calcSpeed(r);
@@ -35,29 +36,48 @@ public class Race {
         }
 
         Collections.sort(contestants, new ByTimeComparator());
-        //resetContestants();
-        stringContestants();
+        stringContestants(id);
     }
 
-    public void createStanding(){
-        List<Contestant> standing = new ArrayList<>(contestants);
-        Collections.sort(standing, new PointsComparator());
-        for(int i=0; i<standing.size(); i++){
-            System.out.println((i+1)+". "+ standing.get(i).getName()+" "+standing.get(i).getPoints());
-        }
-    }
+    public void stringContestants(int id){
+        try {
+            //Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-    public void stringContestants(){
-        for(int i=0; i<contestants.size(); i++){
-            if(i<9) {
-                System.out.println((i+1)+". "+ contestants.get(i).getName()+" "+contestants.get(i).getTime() +" "+points.get(i));
-                contestants.get(i).setPoints(contestants.get(i).getPoints()+points.get(i));
-            }else{
-                System.out.println((i+1)+". "+ contestants.get(i).getName() +" "+contestants.get(i).getTime() + " 0");
-                contestants.get(i).setPoints(contestants.get(i).getPoints()+0);
+            //Connect to server and db
+            Connection con=DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/F1_Season?serverTimezone=" + TimeZone.getDefault().getID(),"root","samolevski");
+            int d=0;
+            int p=0;
+            for(int i=0; i<contestants.size(); i++){
+                if(i<10) {
+                    System.out.println((i+1)+". "+ contestants.get(i).getName()+" - "+contestants.get(i).getTime() +" - "+points.get(i));
+                    contestants.get(i).setPoints(contestants.get(i).getPoints()+points.get(i));
+
+
+                    PreparedStatement stmt = con.prepareStatement("UPDATE Contestants SET Points=Points+"+points.get(i)+" WHERE Name='" +contestants.get(i).getName()+"';");
+                    int affectedRows = stmt.executeUpdate();
+                    p=points.get(i);
+                }else{
+                    System.out.println((i+1)+". "+ contestants.get(i).getName() +" - "+contestants.get(i).getTime() + " - 0");
+                    contestants.get(i).setPoints(contestants.get(i).getPoints()+0);
+                    p=0;
+                }
+                PreparedStatement res = con.prepareStatement("SELECT Id FROM Contestants WHERE Name='"+contestants.get(i).getName()+"'");
+                ResultSet r = res.executeQuery();
+
+                while(r.next()){
+                    d = r.getInt(1);
+                }
+
+
+                PreparedStatement h = con.prepareStatement("INSERT INTO History(Id, Quasification, Id_pilot, Time, Points_race, Id_gp) " +
+                        "VALUES (NULL, "+(i+1)+", "+d+", '"+contestants.get(i).getTime()+"', "+p+", "+id+");");
+                int affectedRows = h.executeUpdate();
+
             }
-        }
-        System.out.println("");
+        }catch(Exception e){ System.out.println(e);}
+
 
         resetContestants();
     }

@@ -44,11 +44,12 @@ public class Contestant{
         this.time = time;
     }
 
-    public void calcSpeed(boolean rain){
-        if(rain) setSpeed(getSpeed()*0.4);
+    public void calcSpeed(int rain){
+        if(rain==1) setSpeed(getSpeed()*0.4);
         Random rand = new Random();
         double randomValue = getQuality().getMin() + (getQuality().getMax() - getQuality().getMin()) * rand.nextDouble();
         setSpeed(getSpeed()+getSpeed()*randomValue);
+        randomValue=0.0;
     }
 
     public String calcTime(double length, int laps){

@@ -1,7 +1,7 @@
 package sim.subd;
 
 public enum Quality {
-    SUPERSTAR{
+    Super_star{
         @Override
         public Double getMax(){
             return 0.009;
@@ -10,7 +10,7 @@ public enum Quality {
         public Double getMin(){
             return -0.006;
         }
-    }, STAR{
+    }, Star{
         @Override
         public Double getMax(){
             return 0.008;
@@ -19,7 +19,7 @@ public enum Quality {
         public Double getMin() {
             return -0.007;
         }
-    }, AVERAGE{
+    }, Average{
         public Double getMax(){
             return 0.007;
         }
@@ -28,7 +28,7 @@ public enum Quality {
             return -0.008;
         }
 
-    }, NEWBY{
+    }, Newby{
         public Double getMax(){
             return 0.008;
         }
@@ -36,7 +36,7 @@ public enum Quality {
         public Double getMin() {
             return -0.009;
         }
-    }, WUNDERKIND{
+    }, Wunderkind{
         public Double getMax(){
             return 0.009;
         }
