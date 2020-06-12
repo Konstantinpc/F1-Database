@@ -63,6 +63,8 @@ public class Race {
                 }else{
                     System.out.println((i+1)+". "+ contestants.get(i).getName() +" - "+contestants.get(i).getTime() + " - 0");
                     contestants.get(i).setPoints(contestants.get(i).getPoints()+0);
+                    points_for_table=0;
+
                 }
                 PreparedStatement res = con.prepareStatement("SELECT Id FROM Contestants WHERE Name='"+contestants.get(i).getName()+"'");
                 ResultSet r = res.executeQuery();
