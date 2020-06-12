@@ -1,9 +1,6 @@
 package sim.subd;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.text.CollationElementIterator;
 import java.util.*;
 
@@ -40,45 +37,61 @@ public class Race {
     }
 
     public void stringContestants(int id){
+        Connection con=null;
+        PreparedStatement query=null;
+        ResultSet rs=null;
+        Integer affectedRows;
         try {
             //Driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //Connect to server and db
-            Connection con=DriverManager.getConnection(
+            con=DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/F1_Season?serverTimezone=" + TimeZone.getDefault().getID(),"root","samolevski");
-            int d=0;
-            int p=0;
+            con.setAutoCommit(false);
+            int id_pilot=0;
+            int points_for_table=0;
             for(int i=0; i<contestants.size(); i++){
                 if(i<10) {
                     System.out.println((i+1)+". "+ contestants.get(i).getName()+" - "+contestants.get(i).getTime() +" - "+points.get(i));
                     contestants.get(i).setPoints(contestants.get(i).getPoints()+points.get(i));
-
-
-                    PreparedStatement stmt = con.prepareStatement("UPDATE Contestants SET Points=Points+"+points.get(i)+" WHERE Name='" +contestants.get(i).getName()+"';");
-                    int affectedRows = stmt.executeUpdate();
-                    p=points.get(i);
+                    query = con.prepareStatement("UPDATE Contestants SET Points=Points+"+points.get(i)+" WHERE Name='" +contestants.get(i).getName()+"';");
+                    affectedRows = query.executeUpdate();
+                    if(affectedRows == 1) { con.commit(); }
+                    else { con.rollback(); }
+                    points_for_table=points.get(i);
                 }else{
                     System.out.println((i+1)+". "+ contestants.get(i).getName() +" - "+contestants.get(i).getTime() + " - 0");
                     contestants.get(i).setPoints(contestants.get(i).getPoints()+0);
-                    p=0;
                 }
                 PreparedStatement res = con.prepareStatement("SELECT Id FROM Contestants WHERE Name='"+contestants.get(i).getName()+"'");
                 ResultSet r = res.executeQuery();
 
                 while(r.next()){
-                    d = r.getInt(1);
+                    id_pilot = r.getInt(1);
                 }
-
-
                 PreparedStatement h = con.prepareStatement("INSERT INTO History(Id, Quasification, Id_pilot, Time, Points_race, Id_gp) " +
-                        "VALUES (NULL, "+(i+1)+", "+d+", '"+contestants.get(i).getTime()+"', "+p+", "+id+");");
-                int affectedRows = h.executeUpdate();
-
+                        "VALUES (NULL, "+(i+1)+", "+id_pilot+", '"+contestants.get(i).getTime()+"', "+points_for_table+", "+id+");");
+                affectedRows = h.executeUpdate();
+                if(affectedRows == 1) { con.commit(); }
+                else { con.rollback(); }
             }
-        }catch(Exception e){ System.out.println(e);}
-
-
+            con.commit();
+        }catch (SQLException | ClassNotFoundException ex) {
+            try{
+                if(con != null)
+                    con.rollback();
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                if(con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         resetContestants();
     }
 }
