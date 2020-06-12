@@ -1,7 +1,7 @@
 # F1-Database
 
 1. Java application for GrandPrix simulation
-2. Database tables - Races, Contestants, CurrentStanding
+2. Database tables - Races, Contestants, History
 
 ## Използвани технологии 
 
