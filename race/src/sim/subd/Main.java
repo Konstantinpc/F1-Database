@@ -186,7 +186,7 @@ public class Main {
                             System.out.println(rs.getInt(1)+". "+rs.getString(2) + " - " + rs.getString(3) + " - "+rs.getInt(4));
                         }
                     }else if(arrOfStr[1].equals("teams")){//standing teams
-                        query1 = con.prepareStatement("SELECT ROW_NUMBER() OVER (ORDER BY Points DESC) row_num, Team, SUM(Points) FROM Contestants GROUP BY Team ORDER BY Points DESC;");
+                        query1 = con.prepareStatement("SELECT ROW_NUMBER() OVER (ORDER BY SUM(Points) DESC) row_num, Team, SUM(Points) FROM Contestants GROUP BY Team ORDER BY SUM(Points) DESC;");
                         rs = query1.executeQuery();
                         System.out.println("Standing Teams:");
                         while (rs.next()) {
