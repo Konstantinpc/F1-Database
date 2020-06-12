@@ -71,11 +71,12 @@ public class Main {
                 }
             }
 
-            //Input in table GrandsPrix
+            //GPs in table GrandsPrix
             Scanner scann = new Scanner(System.in);
             query1 = con.prepareStatement("SELECT COUNT(*) FROM GrandsPrix;");
             rs = query1.executeQuery();
             while(rs.next()){
+                //No GPs => input
                 if(rs.getInt(1)==0){
                     System.out.println("No GrandsPrix!");
                     System.out.println("Input GrandsPrix:");
@@ -157,6 +158,7 @@ public class Main {
                             check = 1;
                         }
                     }
+                    //If no race to sim
                     while (check == 1) {
                         line = scann.nextLine();
                         if (line.equals("restart")) {
@@ -174,16 +176,16 @@ public class Main {
                         } else if (line.equals("continue")) System.out.println("");break;
                     }
 
-                }else if (line.equals("end")) break;
+                }else if (line.equals("end")) break; //end operation
                 else if(arrOfStr[0].equals("standing")){
-                    if(arrOfStr[1].equals("pilots")){
+                    if(arrOfStr[1].equals("pilots")){//standing pilots
                         query1 = con.prepareStatement("SELECT ROW_NUMBER() OVER (ORDER BY Points DESC) row_num, Name, Team, Points FROM Contestants ORDER BY Points DESC;");
                         rs = query1.executeQuery();
                         System.out.println("Standing Pilots:");
                         while (rs.next()) {
                             System.out.println(rs.getInt(1)+". "+rs.getString(2) + " - " + rs.getString(3) + " - "+rs.getInt(4));
                         }
-                    }else if(arrOfStr[1].equals("teams")){
+                    }else if(arrOfStr[1].equals("teams")){//standing teams
                         query1 = con.prepareStatement("SELECT ROW_NUMBER() OVER (ORDER BY Points DESC) row_num, Team, SUM(Points) FROM Contestants GROUP BY Team ORDER BY Points DESC;");
                         rs = query1.executeQuery();
                         System.out.println("Standing Teams:");
@@ -193,7 +195,7 @@ public class Main {
                     }
                     System.out.println("");
                 }
-                else if(arrOfStr[0].equals("history")){
+                else if(arrOfStr[0].equals("history")){//history for each GPs
                     query1 = con.prepareStatement("SELECT h.Quasification, c.Name, c.Team, h.Time, h.Points_race, gp.Location FROM History h" +
                             " LEFT JOIN Contestants c ON c.Id=h.Id_pilot" +
                             " LEFT JOIN GrandsPrix gp ON gp.Id=h.Id_gp" +
@@ -205,7 +207,7 @@ public class Main {
                                 rs.getInt(5));
                     }
                     System.out.println("");
-                }else if(line.equals("change pilot")){
+                }else if(line.equals("change pilot")){//Change pilot operation
                     Scanner scanner = new Scanner(System.in);
                     String f_pilot_name = scanner.nextLine();
                     query1=con.prepareStatement("UPDATE Contestants SET Is_Active=0 WHERE Name='"+f_pilot_name+"'");
@@ -226,7 +228,7 @@ public class Main {
                     System.out.println("");
                     con.commit();
 
-                }else if(line.equals("restart")){
+                }else if(line.equals("restart")){//restart simulation
                     System.out.println("Restart the simulator");
                     System.out.println("");
                     query1 = con.prepareStatement("DELETE FROM History;");
@@ -235,7 +237,7 @@ public class Main {
                     affectRows = query1.executeUpdate();
                     query1 = con.prepareStatement("UPDATE Contestants SET Points=0;");
                     affectRows = query1.executeUpdate();
-                    query1 = con.prepareStatement("DELETE FROM Contestant WHERE Is_active=0;");
+                    query1 = con.prepareStatement("DELETE FROM Contestants WHERE Is_active=0;");
                     affectRows = query1.executeUpdate();
                     con.commit();
                 }
